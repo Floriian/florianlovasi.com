@@ -28,7 +28,7 @@ export default async function Home() {
           Fullstack Developer
         </animated.p>
 
-        <div className="flex w-full gap-4">
+        <div className="flex w-full gap-4 justify-center sm:justify-start">
           <animated.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -43,7 +43,6 @@ export default async function Home() {
           </animated.div>
 
           <animated.div
-            className="flex w-full gap-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7 }}
