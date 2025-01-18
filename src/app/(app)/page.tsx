@@ -54,7 +54,7 @@ export default async function Home() {
         </div>
 
         <animated.div
-          className="flex flex-col gap-4"
+          className="flex gap-4 flex-col md:flex-row"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
@@ -65,7 +65,14 @@ export default async function Home() {
             target="_blank"
           >
             Download CV
-            <span className="absolute left-0 bottom-0 w-full h-[2px] bg-current transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+            <span className="underline-animation"></span>
+          </Link>
+          <Link
+            href="/blog"
+            className="text-lg text-left sm:text-center font-geist-sans relative group"
+          >
+            blog
+            <span className="underline-animation"></span>
           </Link>
         </animated.div>
       </main>

@@ -8,6 +8,15 @@ export const Posts: CollectionConfig = {
       type: "text",
     },
     {
+      name: "slug",
+      type: "text",
+      unique: true,
+    },
+    {
+      name: "introduction",
+      type: "text",
+    },
+    {
       name: "content",
       type: "richText",
     },
