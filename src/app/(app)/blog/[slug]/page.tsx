@@ -1,24 +1,40 @@
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { payload } from "../../payload-instance";
 import { RichText } from "@payloadcms/richtext-lexical/react";
 import dayjs from "dayjs";
 import { Metadata } from "next";
 
-//@ts-expect-error - This is works, but types are not inferred
-const getPost = async (slug: string) => await payload.db.findOne({ collection: "posts", where: { slug } }) as unknown as any;
+const getPost = async (slug: string) =>
+  (await payload.db.findOne({
+    collection: "posts",
+    //@ts-expect-error - This works, but types are not inferred
+    where: { slug },
+    select: { introduction: true, title: true, createdAt: true, content: true },
+  })) as unknown as {
+    introduction: string;
+    title: string;
+    createdAt: Date;
+    content: unknown;
+  };
 
-export async function generateMetadata({ params }: { params: { slug: string }}): Promise<Metadata> {
-    const { slug } = await params;
-    const post = await getPost(slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getPost(slug);
+  
+  if (!post) {
     return {
-        description: post.introduction,
-        authors: {
-            name: "Flórián Lovasi"
-        }
-    }
+      description: "Post not found",
+      authors: [{ name: "Flórián Lovasi" }],
+    };
+  }
+
+  return {
+    description: post.introduction,
+    authors: [{ name: "Flórián Lovasi" }],
+  };
 }
 
-export default async function Page({ params }: { params: { slug: string } }) {
+export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = await getPost(slug);
 
@@ -37,6 +53,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
           </div>
         </div>
         <div className="container">
+          {/* @ts-expect-error - types not inferred */}
           <RichText data={post.content} />
         </div>
       </div>
